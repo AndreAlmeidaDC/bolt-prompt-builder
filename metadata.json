@@ -1,0 +1,26 @@
+{
+  "name": "bolt-prompt-builder",
+  "version": "2026.06.16",
+  "last_standardized_at": "2026.06.16 GMT-3",
+  "description": "Vibecode skill for building full-stack web apps with bolt.new (StackBlitz WebContainers). Structured brief generation with Figma import, system/project prompt, and context management.",
+  "license": "MIT",
+  "origin_url": "https://github.com/AndreAlmeidaDC/bolt-prompt-builder",
+  "origin_git_url": "https://github.com/AndreAlmeidaDC/bolt-prompt-builder.git",
+  "family": "vibecode-prompt-builder",
+  "platform": "bolt.new",
+  "update_policy": "version-check.md",
+  "declared_capabilities": {
+    "network_egress": {
+      "expected": false,
+      "reason": "Prompt-generation skill; performs no network calls."
+    },
+    "subprocess": {
+      "expected": false,
+      "reason": "No subprocess execution."
+    },
+    "dependency_install": {
+      "expected": false,
+      "reason": "No package installation."
+    }
+  }
+}
