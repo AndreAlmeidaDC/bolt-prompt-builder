@@ -116,6 +116,14 @@ São 3 conversões gratuitas por mês; extras consomem tokens.
 Funciona, principalmente o protocolo de reancoragem e a estratégia de gestão de contexto.
 Mas o maior ganho é começar com o brief estruturado desde o início.
 
+**Preciso ativar acessibilidade?**
+Não. Acessibilidade é opcional e fica desligada por padrão. Logo no início do fluxo a
+skill pergunta se o app terá interface web usada por terceiros ou se precisa atender a
+requisito de acessibilidade. Se for uso interno, protótipo ou app da própria equipe,
+responda que não e siga sem nenhum peso extra. Se responder que sim, a skill passa a
+tratar acessibilidade como requisito de toda a UI, com base em
+`references/accessibility-web.md`.
+
 ## Estrutura do repositório
 
 ```
@@ -125,6 +133,7 @@ references/
   platform-bolt.md                # WebContainer, system prompt, Figma, gestão de contexto
   archetypes.md                   # Guia de escolha de plataforma
   version-check.md                # Protocolo de auto-atualização
+  accessibility-web.md            # Acessibilidade web (opcional, ver gate na Fase 1)
 templates/
   PRD.md                          # Template de requisitos de produto
   DATA_MODEL.md                   # Template de modelo de dados
