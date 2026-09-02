@@ -1,180 +1,148 @@
-# Platform Reference — bolt.new
+# Platform Reference — Bolt
 
-bolt.new (bolt.new) é um AI app builder web full-stack da StackBlitz. O que o torna
-único é o WebContainer: o app gerado roda DENTRO DO BROWSER usando Node.js nativo
-no cliente, sem servidor remoto. Deploy integrado com Netlify.
+**Última verificação:** 2026-09-02, documentação oficial do Bolt.
 
-> **Pré-requisito:** complete as Fases 1 a 4 do CORE antes de usar esta referência.
+Bolt constrói sites, aplicações web e projetos mobile com Expo. Projetos atuais usam Claude Agent; novos projetos podem usar Bolt Database por padrão ou Supabase quando escolhido. O estado existente do projeto determina o caminho seguro.
 
----
+Fontes oficiais principais:
 
-## A Constraint Mais Importante do Bolt: WebContainers
+- https://support.bolt.new/
+- https://support.bolt.new/cloud/database
+- https://support.bolt.new/integrations/supabase
+- https://support.bolt.new/integrations/git
+- https://support.bolt.new/concepts/version-history-github
+- https://support.bolt.new/integrations/expo
+- https://support.bolt.new/building/using-bolt/rollback-backup
 
-O WebContainer é o fato mais determinante do bolt.new e o mais ignorado.
-Roda Node.js no browser sem servidor remoto → preview instantâneo.
-O custo: **"runs in the browser" ≠ "runs on a Linux VM"**.
+## Inspeção inicial obrigatória
 
-Native binaries, OS-level tooling e alguns syscalls se comportam diferente ou
-não estão disponíveis no runtime do browser. Quais dependências funcionam evolui,
-então a postura honesta no prompt é:
+Registre antes do prompt:
 
-> "Runs in Bolt's WebContainer; prefer pure-JS dependencies and avoid anything
-> that needs native binaries."
+- projeto novo ou existente;
+- Claude Agent e histórico do projeto;
+- web ou Expo;
+- framework e package manager;
+- banco ausente, Bolt Database ou Supabase;
+- autenticação, server functions e secrets;
+- GitHub conectado ou somente Version History;
+- ambiente publicado e dados reais;
+- dependências com requisitos incompatíveis com o ambiente.
 
-**Esta linha deve aparecer em todo prompt inicial do bolt.new.**
+Não migre arquitetura dentro de uma tarefa visual ou bugfix.
 
----
+## Decisão de banco
 
-## Perguntas adicionais de intake (Fase 1 do CORE)
+### Sem banco
 
-Após as perguntas genéricas:
+É válido pedir explicitamente que Bolt não provisione banco para landing, protótipo local ou experiência sem persistência.
 
-12. Há dependências específicas que você sabe que precisa? Têm versão nativa ou
-    são pure-JS? (o Bolt pode não suportar dependências com binários nativos)
-13. Vai usar Figma import? (3 conversões gratuitas/mês; extras custam tokens)
-14. Prefere regras permanentes de comportamento via system/project prompt? (recomendado)
+### Bolt Database
 
----
+Novos projetos com Claude Agent usam Bolt Database por padrão quando o app precisa de persistência. Antes de aceitar a criação, defina dados, auth, ownership, autorização, backup e recuperação.
 
-## System e Project Prompt — Regras Permanentes
+### Supabase
 
-O bolt.new tem dois mecanismos de regras permanentes que NÃO existem no chat:
+Supabase é alternativa escolhida no início ou legado de projetos antigos. Projetos existentes com Supabase não devem ser orientados a “converter” para Bolt Database. Projetos Bolt Database podem ter caminhos para Supabase, mas migração exige análise de dados, auth, server functions, downtime e rollback.
 
-**Project prompt:** específico do projeto atual. Use pra regras do produto:
-- stack e dependências escolhidas
-- padrões de segurança que não devem mudar
-- convenções de nomeação e estrutura de pastas
+A restauração de Version History não restaura automaticamente o banco. Código e estado de dados são trilhas diferentes.
 
-**System prompt:** aplica a TODOS os projetos do usuário. Use pra estilo e preferências
-globais de geração de código.
+## Plan Mode
 
-Regras permanentes não gastam contexto de chat a cada prompt. Recomende ao usuário
-configurar antes de começar a construir.
+Use Plan Mode para inspeção e plano sem implementação. O plano deve informar:
 
----
+1. fatos observados;
+2. backend atual;
+3. arquivos/recursos afetados;
+4. riscos e dependências;
+5. etapas pequenas;
+6. sensores por etapa;
+7. recuperação/rollback;
+8. dúvidas que o projeto não responde.
 
-## Output de Branding (Fase 3 do CORE — formato bolt.new)
+Não use planejamento como desculpa para um promptão que já manda executar tudo.
 
-Bolt.new usa a mesma stack frontend do Lovable (React + Tailwind + shadcn/ui), então
-o bloco de tokens Tailwind funciona igual. Se o usuário tem design em Figma, use o
-Figma import em vez do bloco manual:
+## GitHub e Version History
 
-> "Cole o link do frame Figma diretamente no chat do bolt para importar o design."
+Version History é útil para restauração dentro do Bolt. GitHub é preferível quando há colaboração, revisão, trabalho externo ou necessidade de histórico durável.
 
-Se não tem Figma, use o mesmo formato de bloco de tokens da referência do Lovable,
-adaptando a instrução final:
+- conecte somente o repositório correto;
+- use branches para trabalho não trivial;
+- revise mudanças antes de integrar;
+- não presuma que restaurar código reverte dados;
+- não apague conflitos ou mudanças desconhecidas;
+- mantenha backup/migração de dados separados.
 
-```
-INSTRUÇÃO PARA O BOLT:
-Configure o tema no tailwind.config.js desde o primeiro prompt.
-Nunca use cores hardcoded — sempre os tokens acima.
-Runs in Bolt's WebContainer; prefer pure-JS dependencies and avoid native binaries.
-```
+## Compatibilidade do ambiente
 
----
+O ambiente executa projetos JavaScript e suas capacidades evoluem. Em vez de uma proibição genérica de qualquer dependência nativa:
 
-## Estrutura do Brief Inicial (formato bolt.new)
+1. inspecione package e requisito operacional;
+2. prefira dependência compatível e mantida;
+3. faça uma prova pequena antes de comprometer arquitetura;
+4. registre incompatibilidade observada;
+5. exporte e use ambiente externo quando a plataforma não sustentar o requisito.
 
-Bolt não tem o fluxo guiado em 4 fases do Lovable. O brief vai em um prompt estruturado:
+## Expo e mobile
 
-```
-# [Nome do Projeto] — Bolt Brief
+Declare “mobile app” desde o primeiro prompt. Projeto web não deve ser convertido casualmente em mobile.
 
-## Product
-[O que é, problema que resolve, usuário principal]
+Para Expo:
 
-## Competitive Edge
-[2-3 diferenciais baseados na pesquisa]
+- defina navegação, safe areas, permissões e offline;
+- teste rapidamente no Expo Go quando compatível;
+- use EAS/dev build para recursos nativos e release;
+- rode `expo-doctor` no código exportado;
+- valide iOS e Android separadamente;
+- TestFlight/Play internal testing antes da produção;
+- publicação nas stores é uma ação separada e aprovada.
 
-## Tech Stack
-- React + TypeScript + Tailwind CSS + shadcn/ui
-- Supabase (Auth + Database + Edge Functions)
-- [Stripe — se monetização]
-- Runs in Bolt's WebContainer; prefer pure-JS dependencies
+## Knowledge e regras permanentes
 
-## Visual Identity
-[Bloco de tokens Tailwind da Fase 3, ou instrução de Figma import]
+Guarde propósito, stack observada, backend escolhido, design system, comandos, segurança e ações proibidas nas superfícies persistentes disponíveis. Não repita todo o projeto em cada prompt.
 
-## Core Features (MVP, em ordem)
-1. [Feature 1]: [comportamento esperado]
-2. [Feature 2]: [comportamento esperado]
-...
+## Prompt de planejamento
 
-## Data Model
-[Tabelas principais, campos essenciais, relações]
+```text
+Use Plan Mode. Inspecione sem editar.
 
-## Security Rules (obrigatório em todo projeto Supabase)
-- RLS enabled on ALL tables
-- Explicit policies: SELECT, INSERT, UPDATE, DELETE per role
-- Never service_role_key on client
-- Never secrets in VITE_ variables
-- External integrations via Edge Functions only
+Objetivo: [resultado]
+Projeto: [web/Expo, novo/existente]
+Backend observado: [nenhum/Bolt Database/Supabase]
+Preservar: [itens]
+Escopo: [áreas]
 
-## WebContainer Safety
-Runs in Bolt's WebContainer. Prefer pure-JS dependencies.
-Flag any package that might need native binaries before installing.
-
-## Build Order
-1. Auth flow
-2. Database schema + RLS policies
-3. [Feature 1]
-4. [Feature 2]
-...
-N. Analytics + Error monitoring
-
-## Never
-- Don't build everything at once
-- Don't use hardcoded colors — always Tailwind tokens
-- Don't skip error states and loading states
-- Don't advance without testing the previous step
+Entregue fatos, plano pequeno, riscos, verificação, impacto em dados e rollback.
+Não implemente nem publique.
 ```
 
----
+## Prompt atômico
 
-## Gestão de Contexto (específico do bolt)
+```text
+Implemente somente [mudança] no projeto e branch atuais.
 
-O bolt.new acumula histórico de chat por sessão. Quando a sessão fica longa e a
-qualidade cai:
+Preserve: [itens]
+Áreas permitidas: [lista]
+Contrato: [comportamento]
+Estados: [edge cases]
+Backend: não alterar a escolha atual
+Verificação: [comandos/fluxos]
 
-1. Peça ao bolt um resumo do estado atual: "Summarize what's been built so far."
-2. Duplique o projeto no bolt (preserva o código, reseta o chat).
-3. Abra nova conversa na cópia, colando o resumo + o brief original como contexto.
-4. Continue a partir do ponto onde parou.
+Não migre banco, não publique e não faça alterações externas.
+Mostre diff, sensores, resultados e pontos cegos.
+```
 
-Isso é diferente do "Reancoragem" do CORE — é gerenciamento de janela de contexto
-específico do bolt, não recuperação de divergência.
+## Verificação
 
----
+- diff e escopo;
+- lint/typecheck/build/testes do projeto;
+- preview e browser para fluxo web;
+- aparelho/build para mobile;
+- autorização e isolamento para dados;
+- secrets e server functions;
+- estado do banco separado do código;
+- recuperação testável;
+- revisão humana para direção visual.
 
-## Features Específicas do Bolt (2025-2026)
+## Claims voláteis
 
-- **Figma import** (Anima): cola link de frame Figma no chat. 3 gratuitas/mês.
-  Extras: 50k-200k tokens dependendo da complexidade do design.
-- **AI image editing** (Nano Banana): edita partes de imagens direto no chat.
-- **MCP support**: conecta Notion, Linear, GitHub ao workflow do bolt (desde 2026).
-- **Git 2-way integration**: sync bidirecional com repositório.
-- **Team Templates**: transforme projetos em templates reutilizáveis (2026).
-- **Editable Netlify URLs**: muda a URL publicada sem redeployar.
-- **Prompt Enhancer**: o bolt melhora o prompt automaticamente se pedido.
-
----
-
-## Artefatos de Reancoragem (Fase 5.5 do CORE)
-
-Quando o bolt divergir do plano, recole no chat:
-- O brief original (especialmente a seção Tech Stack e WebContainer Safety)
-- O modelo de dados (tabelas + RLS)
-- A Build Order e o estado atual
-- As regras de segurança
-
----
-
-## Limitações e Gotchas do Bolt
-
-- Guzzler de tokens em refinamento estético. Reserve design tweaks para depois do
-  MVP funcional.
-- Complexidade alta → erros frequentes e necessidade de intervenção manual.
-- Algumas dependências não funcionam no WebContainer — testar antes de comprometer
-  uma feature que depende delas.
-- SEO/GEO: sem checklist nativo como o Lovable. Incluir explicitamente no brief.
-- Badge: bolt.new não tem badge equivalente ao Lovable. Sem ação necessária.
+Modelos, tokens, planos, limites e integrações mudam. Verifique documentação oficial na data da decisão e não os grave como regras permanentes.

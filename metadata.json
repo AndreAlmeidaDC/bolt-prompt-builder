@@ -1,26 +1,20 @@
 {
   "name": "bolt-prompt-builder",
-  "version": "2026.06.23",
-  "last_standardized_at": "2026.06.23 GMT-3",
-  "description": "Vibecode skill for building full-stack web apps with bolt.new (StackBlitz WebContainers). Structured brief generation with Figma import, system/project prompt, and context management.",
+  "version": "2026.09.02",
+  "last_standardized_at": "2026-09-02 GMT-3",
+  "description": "Workflow skill for current Bolt web and Expo projects with Claude Agent, Plan Mode, Bolt Database or Supabase, GitHub, testing and release safety.",
   "license": "MIT",
   "origin_url": "https://github.com/AndreAlmeidaDC/bolt-prompt-builder",
   "origin_git_url": "https://github.com/AndreAlmeidaDC/bolt-prompt-builder.git",
   "family": "vibecode-prompt-builder",
-  "platform": "bolt.new",
-  "update_policy": "version-check.md",
+  "platform": "Bolt",
+  "maturity": "beta",
+  "platform_claims_verified_at": "2026-09-02",
+  "supported_project_modes": ["greenfield-web", "existing-web", "mobile-expo", "experience-marketing-site", "existing-project-repair"],
+  "confirmation_required_for": ["database-migration", "publish-or-deploy", "production-data", "credentialed-write", "payment", "external-communication"],
   "declared_capabilities": {
-    "network_egress": {
-      "expected": false,
-      "reason": "Prompt-generation skill; performs no network calls."
-    },
-    "subprocess": {
-      "expected": false,
-      "reason": "No subprocess execution."
-    },
-    "dependency_install": {
-      "expected": false,
-      "reason": "No package installation."
-    }
+    "network_egress": {"expected": true, "reason": "The host may inspect current Bolt documentation, projects, GitHub repositories and public references."},
+    "subprocess": {"expected": true, "reason": "Bolt and exported-project workflows may execute scoped Node, Git, Expo and test commands."},
+    "dependency_install": {"expected": true, "reason": "Project dependencies may be installed after compatibility and manifest review."}
   }
 }

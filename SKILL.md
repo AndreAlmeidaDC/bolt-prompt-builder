@@ -1,55 +1,46 @@
 ---
 name: bolt-prompt-builder
 description: >
-  Skill para construir apps web full-stack com bolt.new (StackBlitz). Gera briefs estruturados respeitando a constraint do WebContainer, com suporte a Figma import, system/project prompt e gestão de contexto. Use quando o usuário quiser usar bolt.new.
+  Guides planning, building, repairing, testing and releasing web or Expo projects with the current Bolt platform. Use when the user mentions Bolt, bolt.new, Bolt Database, Supabase in Bolt, Claude Agent, Plan Mode, Bolt GitHub workflows or Bolt mobile projects. Inspect project age, agent, backend and repository state before generating prompts.
 license: MIT
 ---
 
-# bolt.new Prompt Builder
+# Bolt Prompt Builder
+
+This skill reflects current Bolt workflows: Claude Agent, Plan Mode, Bolt Database or Supabase, GitHub/version history, web and Expo projects, and proportional release safety.
 
 ## Origin version check
 
-At the start of a meaningful use, check whether this skill has a newer upstream version.
-The canonical source is:
+Canonical source:
 
 ```text
 https://github.com/AndreAlmeidaDC/bolt-prompt-builder
 ```
 
-If a newer version exists, summarize what changed and ask the user whether to update
-before proceeding. Never self-update silently. For the detailed protocol, read
-`references/version-check.md`.
+At meaningful use, follow `references/version-check.md`. Never self-update silently.
 
-*Autor: André Almeida*
+## Load order
 
----
+1. Read `references/vibecode-core.md`.
+2. Read `references/platform-bolt.md`.
+3. Use `references/archetypes.md` only if platform choice is open.
+4. Apply the smallest supported project mode.
 
-## Quando usar esta skill
+## Non-negotiable boundaries
 
-Use esta skill sempre que o usuário mencionar bolt.new, bolt, StackBlitz, ou quiser construir um app web com controle total do brief inicial.
+- Inspect existing agent, framework, database, Git and deployment state before architecture advice.
+- Do not force Supabase or Bolt Database into projects that need no persistence.
+- Never promise an unsupported migration between database modes.
+- Mobile intent must be declared at project start and verified on devices/builds.
+- Separate Plan Mode from implementation.
+- Do not publish, connect production data, migrate databases, spend money or perform external writes without explicit approval.
 
-Se não tiver certeza se esta é a plataforma certa, leia `references/archetypes.md`
-para um guia de escolha.
+## Output
 
----
+Return only the needed artifact: project knowledge, planning prompt, backend decision, atomic implementation prompt, diagnostic/reanchoring prompt, verification prompt or release checklist.
 
-## Como esta skill funciona
+## Change history
 
-Esta skill usa um processo compartilhado (vibecode CORE) + detalhes específicos
-do bolt.new:
-
-1. **Carregue `references/vibecode-core.md`** — processo completo de especificação
-   e execução (intake, modelagem, branding, validação, geração, reancoragem).
-
-2. **Carregue `references/platform-bolt.md`** — vocabulário, perguntas adicionais,
-   formatos de artefato e especificidades do bolt.new.
-
-3. Execute o fluxo do CORE usando os detalhes da plataforma onde aplicável.
-
----
-
-## Histórico de Alterações
-
-| Data | Versão | Alterações |
+| Date | Version | Change |
 |---|---|---|
-| 2026.06.16 | 2026.06.16 | Criação da skill no formato vibecode: CORE compartilhado + referência específica de plataforma. |
+| 2026-09-02 | 2026.09.02 | Rebuilt around Claude Agent, Plan Mode, Bolt Database/Supabase decisions, GitHub, version history, Expo, current verification and release gates. |
